@@ -1,0 +1,54 @@
+{
+    "tracks": [
+      {
+        "name": "The Black Mountain",
+        "artist": "Old Dwarven King",
+        "image": "Cover1.webp",
+        "duration": "553"
+      },
+      {
+        "name": "Moonlit Ruins",
+        "artist": "The Ancients",
+        "image": "Cover2.webp",
+        "duration": "454"
+      },
+      {
+        "name": "Ashen Keep",
+        "artist": "Inferno",
+        "image": "Cover3.webp",
+        "duration": "486"
+      },
+      {
+        "name": "Cryptborn",
+        "artist": "Necropolis",
+        "image": "Cover4.webp",
+        "audio": "Track-6.mp3",
+        "duration": "188"
+      },
+      {
+        "name": "Wayfarer",
+        "artist": "The End of Days",
+        "image": "Cover5.webp",
+        "duration": "283"
+      },
+      {
+        "name": "Hero's Journey",
+        "artist": "Ironclad",
+        "image": "Cover6.webp",
+        "audio": "Track-4.mp3",
+        "duration": "392"
+      },
+      {
+        "name": "Endless Caverns",
+        "artist": "Drunk Goblins",
+        "image": "Cover7.webp",
+        "duration": "365"
+      },
+      {
+        "name": "The Wise Wizard",
+        "artist": "Galactus",
+        "image": "Cover8.webp",
+        "duration": "350"
+      }
+    ]
+  }

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Arcane Archive</title>
+    <link rel="stylesheet" href="style.css?v=3">
+</head>
+<body>
+    <div class="starfield-layer" aria-hidden="true">
+        <div class="starfield-moon"></div>
+        <div class="starfield-stars" id="starfield-stars"></div>
+    </div>
+
+    <div class="forest-backdrop-layer" aria-hidden="true">
+        <img
+            class="forest-backdrop-layer__art"
+            src="images/Forest-Backdrop.png"
+            alt=""
+            decoding="async"
+        >
+    </div>
+
+    <div class="background-fog-layer" aria-hidden="true">
+        <video
+            class="background-fog"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="auto"
+        >
+            <source src="images/Fog-Loop.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <svg class="svg-filters" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+            <filter id="vintage-print" x="-10%" y="-20%" width="120%" height="140%" color-interpolation-filters="sRGB">
+                <feTurbulence type="fractalNoise" baseFrequency="0.042" numOctaves="3" seed="9" result="edgeNoise" />
+                <feDisplacementMap in="SourceGraphic" in2="edgeNoise" scale="0.36" xChannelSelector="R" yChannelSelector="G" result="roughened" />
+
+                <feGaussianBlur in="roughened" stdDeviation="0.26" result="bleed" />
+                <feColorMatrix in="bleed" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 0.24 0" result="bleedFaint" />
+                <feMerge result="inkBleed">
+                    <feMergeNode in="bleedFaint" />
+                    <feMergeNode in="roughened" />
+                </feMerge>
+
+                <feTurbulence type="fractalNoise" baseFrequency="0.95" numOctaves="4" seed="3" result="fineNoise" />
+                <feColorMatrix in="fineNoise" type="matrix" values="0 0 0 0 0.11  0 0 0 0 0.10  0 0 0 0 0.09  0 0 0 0.62 0" result="densityNoise" />
+                <feComposite in="densityNoise" in2="inkBleed" operator="in" result="densityNoiseMasked" />
+                <feBlend in="inkBleed" in2="densityNoiseMasked" mode="multiply" result="densityClipped" />
+
+                <feTurbulence type="fractalNoise" baseFrequency="1.35" numOctaves="2" seed="17" result="wearNoise" />
+                <feColorMatrix in="wearNoise" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" result="wearAlpha" />
+                <feComponentTransfer in="wearAlpha" result="wearSpecks">
+                    <feFuncA type="discrete" tableValues="1 1 1 0.97 1 1 0.96 1" />
+                </feComponentTransfer>
+                <feComposite in="densityClipped" in2="wearSpecks" operator="in" result="worn" />
+
+                <feColorMatrix in="worn" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1.04 0" result="inkBoost" />
+                <feComposite in="inkBoost" in2="inkBleed" operator="in" />
+            </filter>
+        </defs>
+    </svg>
+
+    <div class="music-player-scale-host">
+    <main class="music-player">
+        <h1 class="music-player__title"><span class="music-player__title-ink">The Arcane Archive</span></h1>
+
+        <div class="music-player__cube">
+            <div class="music-player__cube-surface" aria-hidden="true">
+                <div class="music-player__cube-texture"></div>
+            </div>
+            <div class="music-player__layout">
+            <div class="music-player__cover music-player__cover--1">
+                <img class="music-player__cover-art" src="images/Cover1.webp" alt="Album artwork 1">
+            </div>
+
+            <div class="music-player__panel">
+                <div class="music-player__info">
+                    <h2 class="music-player__track-title"><span class="music-player__title-ink">Music placeholder 1</span></h2>
+                    <p class="music-player__track-artist">Artist placeholder 1</p>
+                    <div class="music-player__eq" data-eq="idle" aria-hidden="true">
+                        <span class="music-player__eq-bar"></span>
+                        <span class="music-player__eq-bar"></span>
+                        <span class="music-player__eq-bar"></span>
+                        <span class="music-player__eq-bar"></span>
+                        <span class="music-player__eq-bar"></span>
+                        <span class="music-player__eq-bar"></span>
+                        <span class="music-player__eq-bar"></span>
+                        <span class="music-player__eq-bar"></span>
+                        <span class="music-player__eq-bar"></span>
+                        <span class="music-player__eq-bar"></span>
+                        <span class="music-player__eq-bar"></span>
+                        <span class="music-player__eq-bar"></span>
+                        <span class="music-player__eq-bar"></span>
+                        <span class="music-player__eq-bar"></span>
+                        <span class="music-player__eq-bar"></span>
+                        <span class="music-player__eq-bar"></span>
+                        <span class="music-player__eq-bar"></span>
+                        <span class="music-player__eq-bar"></span>
+                        <span class="music-player__eq-bar"></span>
+                        <span class="music-player__eq-bar"></span>
+                        <span class="music-player__eq-bar"></span>
+                        <span class="music-player__eq-bar"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="music-player__controls" role="group" aria-label="Playback controls">
+                <div class="music-player__controls-side music-player__controls-side--start">
+                    <button type="button" class="music-player__control music-player__control--toggle music-player__control--shuffle" aria-pressed="false" aria-label="Shuffle off">
+                        <img class="music-player__control-icon" src="images/Shuffle.png" alt="">
+                        <span class="music-player__control-dot" aria-hidden="true"></span>
+                    </button>
+                    <button type="button" class="music-player__control music-player__control--toggle music-player__control--loop" aria-pressed="false" aria-label="Loop off">
+                        <img class="music-player__control-icon" src="images/Loop.png" alt="">
+                        <span class="music-player__control-dot" aria-hidden="true"></span>
+                    </button>
+                </div>
+
+                <div class="music-player__controls-main">
+                    <button type="button" class="music-player__control music-player__control--previous" aria-label="Previous track">
+                        <img class="music-player__control-icon" src="images/Previous.png" alt="">
+                    </button>
+                    <button type="button" class="music-player__control music-player__control--play-pause" data-playback="paused" aria-label="Play">
+                        <img class="music-player__control-icon music-player__control-icon--play" src="images/Play.png" alt="">
+                        <img class="music-player__control-icon music-player__control-icon--pause" src="images/Pause.png" alt="">
+                    </button>
+                    <button type="button" class="music-player__control music-player__control--next" aria-label="Next track">
+                        <img class="music-player__control-icon" src="images/Next.png" alt="">
+                    </button>
+                </div>
+
+                <div class="music-player__controls-side music-player__controls-side--end music-player__volume">
+                    <button type="button" class="music-player__control music-player__control--sound" data-sound="on" aria-label="Mute">
+                        <img class="music-player__control-icon music-player__control-icon--sound-on" src="images/Sound-On.png" alt="">
+                        <img class="music-player__control-icon music-player__control-icon--sound-off" src="images/Sound-Off.png" alt="">
+                    </button>
+                    <label class="music-player__volume-sr" for="music-player-volume">Volume</label>
+                    <div class="music-player__volume-rail">
+                        <div class="music-player__volume-track" aria-hidden="true">
+                            <div class="music-player__volume-fill"></div>
+                        </div>
+                        <input
+                            id="music-player-volume"
+                            class="music-player__volume-input"
+                            type="range"
+                            min="0"
+                            max="100"
+                            value="50"
+                            aria-valuemin="0"
+                            aria-valuemax="100"
+                            aria-valuenow="50"
+                        >
+                    </div>
+                </div>
+            </div>
+
+            <div class="music-player__progress">
+                <span class="music-player__progress-time music-player__progress-time--current" aria-hidden="true">00:00</span>
+                <div
+                    class="music-player__progress-rail"
+                    role="progressbar"
+                    aria-label="Playback progress"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                    aria-valuenow="0"
+                >
+                    <div class="music-player__progress-track" aria-hidden="true">
+                        <div class="music-player__progress-fill"></div>
+                    </div>
+                    <div class="music-player__progress-thumb" aria-hidden="true"></div>
+                </div>
+                <span class="music-player__progress-time music-player__progress-time--duration" aria-hidden="true">00:00</span>
+            </div>
+            </div>
+
+            <img class="music-player__cube-ornament music-player__cube-ornament--bottom-left" src="images/Corner%20Ornament.svg" alt="">
+            <div class="music-player__cube-ornament-wrap music-player__cube-ornament-wrap--top-right">
+                <img class="music-player__cube-ornament" src="images/Corner%20Ornament.svg" alt="">
+            </div>
+            <div class="music-player__cube-ornament-wrap music-player__cube-ornament-wrap--bottom-right">
+                <img class="music-player__cube-ornament" src="images/Corner%20Ornament.svg" alt="">
+            </div>
+        </div>
+    </main>
+    </div>
+
+    <div class="grain" aria-hidden="true"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
