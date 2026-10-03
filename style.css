@@ -19,13 +19,16 @@
 }
 
 body {
+    --scene-bg: #000;
+
     margin: 0;
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #000;
+    background: var(--scene-bg);
     color: #fff;
+    transition: background-color 0.9s ease;
     font-family: 'font', serif;
     cursor: default;
     user-select: none;
@@ -123,6 +126,130 @@ body {
     }
 }
 
+.starfield-sun {
+    position: absolute;
+    top: 8%;
+    right: 11%;
+    width: clamp(64px, 10vw, 118px);
+    height: clamp(64px, 10vw, 118px);
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0;
+    visibility: hidden;
+    background: radial-gradient(
+        circle at 50% 50%,
+        rgba(180, 172, 148, 0.38) 0%,
+        rgba(168, 158, 132, 0.32) 55%,
+        rgba(160, 150, 128, 0.14) 72%,
+        rgba(160, 150, 128, 0) 82%
+    );
+    box-shadow:
+        0 0 28px rgba(170, 158, 130, 0.08);
+    filter: blur(0.55px);
+    animation: sun-glow 14s ease-in-out infinite;
+    transition: opacity 0.85s ease, visibility 0.85s ease;
+}
+
+@keyframes sun-glow {
+    0%,
+    100% {
+        opacity: 0.34;
+    }
+
+    50% {
+        opacity: 0.42;
+    }
+}
+
+body[data-scene-theme="night"] .starfield-moon {
+    opacity: 1;
+    visibility: visible;
+}
+
+body[data-scene-theme="night"] .starfield-sun {
+    opacity: 0;
+    visibility: hidden;
+    animation: none;
+}
+
+body[data-scene-theme="night"] .starfield-stars {
+    opacity: 1;
+    visibility: visible;
+}
+
+body[data-scene-theme="dawn"] {
+    --scene-bg: #071209;
+}
+
+body[data-scene-theme="dawn"] .starfield-moon {
+    opacity: 0;
+    visibility: hidden;
+    animation: none;
+}
+
+body[data-scene-theme="dawn"] .starfield-sun {
+    opacity: 0.38;
+    visibility: visible;
+}
+
+body[data-scene-theme="dawn"] .starfield-stars {
+    opacity: 0;
+    visibility: hidden;
+}
+
+body[data-scene-theme="twilight"] {
+    --scene-bg: #0a0612;
+}
+
+body[data-scene-theme="twilight"] .starfield-moon {
+    opacity: 0.36;
+    visibility: visible;
+    background: radial-gradient(
+        circle at 50% 50%,
+        rgba(178, 170, 192, 0.34) 0%,
+        rgba(158, 148, 172, 0.28) 52%,
+        rgba(140, 130, 158, 0.12) 72%,
+        rgba(140, 130, 158, 0) 84%
+    );
+    box-shadow: 0 0 32px rgba(130, 110, 170, 0.07);
+    filter: blur(0.55px);
+    animation: moon-glow-subtle 14s ease-in-out infinite;
+}
+
+body[data-scene-theme="twilight"] .starfield-moon::before {
+    display: none;
+}
+
+body[data-scene-theme="twilight"] .starfield-sun {
+    opacity: 0;
+    visibility: hidden;
+    animation: none;
+}
+
+body[data-scene-theme="twilight"] .starfield-stars {
+    opacity: 0.72;
+    visibility: visible;
+}
+
+@keyframes moon-glow-subtle {
+    0%,
+    100% {
+        opacity: 0.32;
+    }
+
+    50% {
+        opacity: 0.4;
+    }
+}
+
+.starfield-moon {
+    transition: opacity 0.85s ease, visibility 0.85s ease;
+}
+
+.starfield-stars {
+    transition: opacity 0.85s ease, visibility 0.85s ease;
+}
+
 .forest-backdrop-layer {
     --forest-backdrop-opacity: 0.2;
     --forest-backdrop-height: 70%;
@@ -146,6 +273,7 @@ body {
     pointer-events: none;
     user-select: none;
     -webkit-user-drag: none;
+    transition: opacity 0.55s ease;
 }
 
 .background-fog-layer {
@@ -214,6 +342,28 @@ body {
     --cube-viewport-width: 86vw;
     --player-scale: 1;
 
+    --cube-fill: #242424;
+    --cube-backing: #393733;
+    --cube-texture-base: #000;
+    --ink: #000;
+    --player-heading-ink: #fff;
+    --player-ink-muted: rgba(0, 0, 0, 0.76);
+    --player-ink-time: rgba(0, 0, 0, 0.7);
+    --player-ink-soft: rgba(0, 0, 0, 0.72);
+    --player-rail-top: #080807;
+    --player-rail-mid: #151413;
+    --player-rail-bottom: #050505;
+    --player-fill-top: #2b2a28;
+    --player-fill-mid: #121110;
+    --player-fill-bottom: #030303;
+    --player-gem-top: #2a2927;
+    --player-gem-bottom: #0a0a09;
+    --player-knob-top: #1f1e1c;
+    --player-knob-mid: #060605;
+    --player-knob-bottom: #171615;
+    --player-toggle-dot: #0a0a0a;
+    --player-shadow-rgb: 0, 0, 0;
+
     position: relative;
     display: flex;
     flex-direction: column;
@@ -234,17 +384,123 @@ body {
 
 .music-player__title-ink {
     display: inline-block;
-    color: #fff;
+    color: var(--player-heading-ink);
     -webkit-font-smoothing: antialiased;
     filter: url(#vintage-print);
+    transition: color 0.9s ease;
+}
+
+body[data-scene-theme="dawn"] .music-player {
+    --cube-fill: #1c241f;
+    --cube-backing: #313a34;
+    --cube-texture-base: #060a08;
+    --ink: #101a14;
+    --player-heading-ink: #dce6da;
+    --player-ink-muted: rgba(14, 32, 22, 0.78);
+    --player-ink-time: rgba(16, 34, 24, 0.72);
+    --player-ink-soft: rgba(12, 28, 20, 0.72);
+    --player-rail-top: #080a09;
+    --player-rail-mid: #141916;
+    --player-rail-bottom: #050706;
+    --player-fill-top: #272f29;
+    --player-fill-mid: #111612;
+    --player-fill-bottom: #030504;
+    --player-gem-top: #28302a;
+    --player-gem-bottom: #0a0c0b;
+    --player-knob-top: #1e241f;
+    --player-knob-mid: #060807;
+    --player-knob-bottom: #161a17;
+    --player-toggle-dot: #0c120e;
+    --player-shadow-rgb: 8, 14, 10;
+}
+
+body[data-scene-theme="dawn"] .music-player__cover--2 {
+    --cover-backing: #879088;
+}
+
+body[data-scene-theme="dawn"] .music-player__control-icon {
+    filter:
+        drop-shadow(0 1px 0 rgba(var(--player-shadow-rgb), 0.35))
+        sepia(0.16)
+        hue-rotate(88deg)
+        saturate(0.9);
+}
+
+body[data-scene-theme="dawn"] .music-player__control:hover .music-player__control-icon {
+    opacity: 0.48;
+    filter:
+        drop-shadow(0 1px 0 rgba(var(--player-shadow-rgb), 0.2))
+        sepia(0.16)
+        hue-rotate(88deg)
+        saturate(0.9);
+}
+
+body[data-scene-theme="dawn"] .music-player__control:active .music-player__control-icon {
+    opacity: 0.4;
+    filter:
+        drop-shadow(0 1px 0 rgba(var(--player-shadow-rgb), 0.22))
+        sepia(0.16)
+        hue-rotate(88deg)
+        saturate(0.9);
+}
+
+body[data-scene-theme="twilight"] .music-player {
+    --cube-fill: #1e1a26;
+    --cube-backing: #342f3e;
+    --cube-texture-base: #07050c;
+    --ink: #120e18;
+    --player-heading-ink: #e2dce8;
+    --player-ink-muted: rgba(24, 16, 34, 0.78);
+    --player-ink-time: rgba(26, 18, 36, 0.72);
+    --player-ink-soft: rgba(20, 14, 30, 0.72);
+    --player-rail-top: #0a080d;
+    --player-rail-mid: #16141c;
+    --player-rail-bottom: #060508;
+    --player-fill-top: #2a2632;
+    --player-fill-mid: #121018;
+    --player-fill-bottom: #030204;
+    --player-gem-top: #2b2733;
+    --player-gem-bottom: #0b090e;
+    --player-knob-top: #211e28;
+    --player-knob-mid: #070608;
+    --player-knob-bottom: #18151e;
+    --player-toggle-dot: #100c14;
+    --player-shadow-rgb: 12, 8, 20;
+}
+
+body[data-scene-theme="twilight"] .music-player__cover--3 {
+    --cover-backing: #84808c;
+}
+
+body[data-scene-theme="twilight"] .music-player__control-icon {
+    filter:
+        drop-shadow(0 1px 0 rgba(var(--player-shadow-rgb), 0.35))
+        sepia(0.14)
+        hue-rotate(248deg)
+        saturate(0.88);
+}
+
+body[data-scene-theme="twilight"] .music-player__control:hover .music-player__control-icon {
+    opacity: 0.48;
+    filter:
+        drop-shadow(0 1px 0 rgba(var(--player-shadow-rgb), 0.2))
+        sepia(0.14)
+        hue-rotate(248deg)
+        saturate(0.88);
+}
+
+body[data-scene-theme="twilight"] .music-player__control:active .music-player__control-icon {
+    opacity: 0.4;
+    filter:
+        drop-shadow(0 1px 0 rgba(var(--player-shadow-rgb), 0.22))
+        sepia(0.14)
+        hue-rotate(248deg)
+        saturate(0.88);
 }
 
 .music-player__cube {
-    --cube-fill: #242424;
-    --cube-backing: #393733;
     --cube-ornament-inset: clamp(12px, 4.2cqw, 22px);
     --cube-ornament-size: clamp(88px, 26cqw, 168px);
-    --ink: #000;
     --cover-inset: clamp(14px, 4.8cqw, 26px);
     --cover-size: clamp(132px, 40.5cqw, 210px);
     --cover-nudge-x: clamp(-4px, -1cqw, -6px);
@@ -785,13 +1041,15 @@ body {
     pointer-events: none;
     isolation: isolate;
     background-color: var(--cube-fill);
+    transition: background-color 0.9s ease;
 }
 
 .music-player__cube-texture {
     position: absolute;
     inset: 0;
     opacity: var(--cube-texture-overlay-opacity);
-    background-color: #000;
+    background-color: var(--cube-texture-base);
+    transition: background-color 0.9s ease;
     mask-image: url("images/Texture-Overlay.png");
     mask-mode: alpha;
     mask-repeat: repeat;
@@ -887,7 +1145,8 @@ body {
 }
 
 .music-player__cube .music-player__title-ink {
-    color: #000;
+    color: var(--ink);
+    transition: color 0.9s ease;
 }
 
 .music-player__track-artist {
@@ -898,7 +1157,8 @@ body {
     font-synthesis: weight;
     letter-spacing: 0.03em;
     text-transform: uppercase;
-    color: rgba(0, 0, 0, 0.76);
+    color: var(--player-ink-muted);
+    transition: color 0.9s ease;
 }
 
 .music-player__eq {
@@ -919,12 +1179,13 @@ body {
     max-width: 6px;
     height: 100%;
     border-radius: 1px;
-    background: linear-gradient(180deg, var(--ink), rgba(0, 0, 0, 0.72));
+    background: linear-gradient(180deg, var(--ink), var(--player-ink-soft));
     opacity: 0.88;
     transform-origin: bottom;
     animation: eq-pulse 2.6s ease-in-out infinite;
     animation-play-state: paused;
-    filter: drop-shadow(1px 1px 0 rgba(0, 0, 0, 0.12));
+    filter: drop-shadow(1px 1px 0 rgba(var(--player-shadow-rgb), 0.12));
+    transition: background 0.9s ease, filter 0.9s ease;
 }
 
 .music-player__eq[data-eq="playing"] .music-player__eq-bar {
@@ -1092,8 +1353,9 @@ body {
 }
 
 .music-player__control--toggle[aria-pressed="true"] .music-player__control-dot {
-    background: #0a0a0a;
-    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
+    background: var(--player-toggle-dot);
+    box-shadow: 0 0 0 1px rgba(var(--player-shadow-rgb), 0.15);
+    transition: background 0.9s ease, box-shadow 0.9s ease;
 }
 
 .music-player__control:hover .music-player__control-icon {
@@ -1145,8 +1407,9 @@ body {
     font-synthesis: weight;
     font-size: clamp(1rem, 2.85cqw, 1.28rem);
     letter-spacing: 0.02em;
-    color: rgba(0, 0, 0, 0.7);
+    color: var(--player-ink-time);
     font-variant-numeric: tabular-nums;
+    transition: color 0.9s ease;
 }
 
 .music-player__progress-time--current {
@@ -1182,14 +1445,20 @@ body {
         0% 50%
     );
     background:
-        linear-gradient(180deg, #080807 0%, #151413 38%, #050505 100%),
+        linear-gradient(
+            180deg,
+            var(--player-rail-top) 0%,
+            var(--player-rail-mid) 38%,
+            var(--player-rail-bottom) 100%
+        ),
         url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.65'/%3E%3C/svg%3E");
     background-blend-mode: multiply;
     background-size: auto, 100px 100px;
     box-shadow:
         inset 0 1px 0 rgba(255, 255, 255, 0.07),
-        inset 0 -2px 4px rgba(0, 0, 0, 0.55),
+        inset 0 -2px 4px rgba(var(--player-shadow-rgb), 0.55),
         0 1px 0 rgba(255, 255, 255, 0.04);
+    transition: background 0.9s ease, box-shadow 0.9s ease;
 }
 
 .music-player__progress-track::before,
@@ -1200,7 +1469,8 @@ body {
     width: 3px;
     height: 3px;
     transform: translateY(-50%) rotate(45deg);
-    background: linear-gradient(135deg, #2a2927, #0a0a09);
+    background: linear-gradient(135deg, var(--player-gem-top), var(--player-gem-bottom));
+    transition: background 0.9s ease;
     box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
     pointer-events: none;
 }
@@ -1217,13 +1487,19 @@ body {
     width: 0%;
     height: 100%;
     background:
-        linear-gradient(180deg, #2b2a28 0%, #121110 55%, #030303 100%),
+        linear-gradient(
+            180deg,
+            var(--player-fill-top) 0%,
+            var(--player-fill-mid) 55%,
+            var(--player-fill-bottom) 100%
+        ),
         repeating-linear-gradient(
             90deg,
             transparent 0 3px,
             rgba(255, 255, 255, 0.025) 3px 4px
         );
-    box-shadow: inset -8px 0 12px rgba(0, 0, 0, 0.35);
+    box-shadow: inset -8px 0 12px rgba(var(--player-shadow-rgb), 0.35);
+    transition: background 0.9s ease, box-shadow 0.9s ease;
 }
 
 .music-player__progress-thumb {
@@ -1237,15 +1513,21 @@ body {
     border-radius: 50%;
     background:
         radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.14), transparent 42%),
-        linear-gradient(155deg, #1f1e1c 0%, #060605 52%, #171615 100%),
+        linear-gradient(
+            155deg,
+            var(--player-knob-top) 0%,
+            var(--player-knob-mid) 52%,
+            var(--player-knob-bottom) 100%
+        ),
         url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cfilter id='t'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.35' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23t)' opacity='0.7'/%3E%3C/svg%3E");
     background-blend-mode: screen, multiply, multiply;
     background-size: auto, auto, 80px 80px;
     box-shadow:
-        0 2px 0 rgba(0, 0, 0, 0.65),
+        0 2px 0 rgba(var(--player-shadow-rgb), 0.65),
         inset 0 1px 0 rgba(255, 255, 255, 0.1),
-        inset 0 -3px 6px rgba(0, 0, 0, 0.5);
-    filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.45));
+        inset 0 -3px 6px rgba(var(--player-shadow-rgb), 0.5);
+    filter: drop-shadow(0 1px 1px rgba(var(--player-shadow-rgb), 0.45));
+    transition: background 0.9s ease, box-shadow 0.9s ease, filter 0.9s ease;
 }
 
 
@@ -1293,14 +1575,20 @@ body {
         0% 50%
     );
     background:
-        linear-gradient(180deg, #080807 0%, #151413 38%, #050505 100%),
+        linear-gradient(
+            180deg,
+            var(--player-rail-top) 0%,
+            var(--player-rail-mid) 38%,
+            var(--player-rail-bottom) 100%
+        ),
         url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.65'/%3E%3C/svg%3E");
     background-blend-mode: multiply;
     background-size: auto, 100px 100px;
     box-shadow:
         inset 0 1px 0 rgba(255, 255, 255, 0.07),
-        inset 0 -2px 4px rgba(0, 0, 0, 0.55),
+        inset 0 -2px 4px rgba(var(--player-shadow-rgb), 0.55),
         0 1px 0 rgba(255, 255, 255, 0.04);
+    transition: background 0.9s ease, box-shadow 0.9s ease;
 }
 
 .music-player__volume-track::before,
@@ -1311,7 +1599,8 @@ body {
     width: 4px;
     height: 4px;
     transform: translateY(-50%) rotate(45deg);
-    background: linear-gradient(135deg, #2a2927, #0a0a09);
+    background: linear-gradient(135deg, var(--player-gem-top), var(--player-gem-bottom));
+    transition: background 0.9s ease;
     box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
     pointer-events: none;
 }
@@ -1328,14 +1617,19 @@ body {
     width: 50%;
     height: 100%;
     background:
-        linear-gradient(180deg, #2b2a28 0%, #121110 55%, #030303 100%),
+        linear-gradient(
+            180deg,
+            var(--player-fill-top) 0%,
+            var(--player-fill-mid) 55%,
+            var(--player-fill-bottom) 100%
+        ),
         repeating-linear-gradient(
             90deg,
             transparent 0 3px,
             rgba(255, 255, 255, 0.025) 3px 4px
         );
-    box-shadow: inset -8px 0 12px rgba(0, 0, 0, 0.35);
-    transition: width 0.08s linear;
+    box-shadow: inset -8px 0 12px rgba(var(--player-shadow-rgb), 0.35);
+    transition: width 0.08s linear, background 0.9s ease, box-shadow 0.9s ease;
 }
 
 .music-player__volume-input {
@@ -1385,22 +1679,27 @@ body {
     cursor: grab;
     background:
         radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.14), transparent 42%),
-        linear-gradient(155deg, #1f1e1c 0%, #060605 52%, #171615 100%),
+        linear-gradient(
+            155deg,
+            var(--player-knob-top) 0%,
+            var(--player-knob-mid) 52%,
+            var(--player-knob-bottom) 100%
+        ),
         url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cfilter id='t'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.35' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23t)' opacity='0.7'/%3E%3C/svg%3E");
     background-blend-mode: screen, multiply, multiply;
     background-size: auto, auto, 80px 80px;
     border-radius: 50%;
     box-shadow:
-        0 2px 0 rgba(0, 0, 0, 0.65),
+        0 2px 0 rgba(var(--player-shadow-rgb), 0.65),
         inset 0 1px 0 rgba(255, 255, 255, 0.1),
-        inset 0 -3px 6px rgba(0, 0, 0, 0.5);
-    filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.45));
-    transition: filter 0.18s ease, box-shadow 0.18s ease;
+        inset 0 -3px 6px rgba(var(--player-shadow-rgb), 0.5);
+    filter: drop-shadow(0 1px 1px rgba(var(--player-shadow-rgb), 0.45));
+    transition: filter 0.18s ease, box-shadow 0.18s ease, background 0.9s ease;
 }
 
 .music-player__volume-input:active::-webkit-slider-thumb {
     cursor: grabbing;
-    filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.55));
+    filter: drop-shadow(0 0 4px rgba(var(--player-shadow-rgb), 0.55));
 }
 
 .music-player__volume-input::-moz-range-thumb {
@@ -1412,15 +1711,20 @@ body {
     transform: translateY(1px);
     background:
         radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.14), transparent 42%),
-        linear-gradient(155deg, #1f1e1c 0%, #060605 52%, #171615 100%),
+        linear-gradient(
+            155deg,
+            var(--player-knob-top) 0%,
+            var(--player-knob-mid) 52%,
+            var(--player-knob-bottom) 100%
+        ),
         url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cfilter id='t'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.35' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23t)' opacity='0.7'/%3E%3C/svg%3E");
     background-blend-mode: screen, multiply, multiply;
     background-size: auto, auto, 80px 80px;
     box-shadow:
-        0 2px 0 rgba(0, 0, 0, 0.65),
+        0 2px 0 rgba(var(--player-shadow-rgb), 0.65),
         inset 0 1px 0 rgba(255, 255, 255, 0.1),
-        inset 0 -3px 6px rgba(0, 0, 0, 0.5);
-    filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.45));
+        inset 0 -3px 6px rgba(var(--player-shadow-rgb), 0.5);
+    filter: drop-shadow(0 1px 1px rgba(var(--player-shadow-rgb), 0.45));
 }
 
 .music-player__volume-input:active::-moz-range-thumb {

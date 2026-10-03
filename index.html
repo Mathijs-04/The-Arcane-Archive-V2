@@ -4,17 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Arcane Archive</title>
-    <link rel="stylesheet" href="style.css?v=3">
+    <link rel="stylesheet" href="style.css?v=7">
 </head>
-<body>
+<body data-scene-theme="night">
     <div class="starfield-layer" aria-hidden="true">
         <div class="starfield-moon"></div>
+        <div class="starfield-sun"></div>
         <div class="starfield-stars" id="starfield-stars"></div>
     </div>
 
     <div class="forest-backdrop-layer" aria-hidden="true">
         <img
             class="forest-backdrop-layer__art"
+            id="scene-backdrop"
             src="images/Forest-Backdrop.png"
             alt=""
             decoding="async"

@@ -90,6 +90,45 @@
 
     const volumeRailEl = document.querySelector('.music-player__volume-rail');
 
+    const sceneBackdrop = document.getElementById('scene-backdrop');
+
+    const SCENE_THEMES = {
+        night: {
+            theme: 'night',
+            backdrop: 'images/Forest-Backdrop.png',
+        },
+        dawn: {
+            theme: 'dawn',
+            backdrop: 'images/Backdrop-2.png',
+        },
+        twilight: {
+            theme: 'twilight',
+            backdrop: 'images/Backdrop-3.png',
+        },
+    };
+
+    /** Per-track scene keys; omit or use `night` for the default night sky. */
+    const TRACK_SCENE_KEYS = [
+        'night',
+        'dawn',
+        'twilight',
+    ];
+
+    const getSceneForTrack = (index) => {
+        const key = TRACK_SCENE_KEYS[index] ?? 'night';
+        return SCENE_THEMES[key] ?? SCENE_THEMES.night;
+    };
+
+    const applySceneTheme = (index) => {
+        const scene = getSceneForTrack(index);
+
+        document.body.dataset.sceneTheme = scene.theme;
+
+        if (sceneBackdrop && sceneBackdrop.getAttribute('src') !== scene.backdrop) {
+            sceneBackdrop.src = scene.backdrop;
+        }
+    };
+
 
     if (!coverElement || !coverArt || !trackTitle || !trackArtist || !equalizer) {
         return;
@@ -406,6 +445,8 @@
 
     const applyTrack = (index) => {
         const track = tracks[index];
+
+        applySceneTheme(index);
 
         coverArt.src = track.coverSrc;
         coverArt.alt = track.coverAlt;
