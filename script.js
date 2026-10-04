@@ -99,11 +99,15 @@
         },
         dawn: {
             theme: 'dawn',
-            backdrop: 'images/Backdrop-2.png',
+            backdrop: 'images/magic-forest-backdrop.png',
         },
         twilight: {
             theme: 'twilight',
-            backdrop: 'images/Backdrop-3.png',
+            backdrop: 'images/medieval-city-backdrop.png',
+        },
+        midnight: {
+            theme: 'midnight',
+            backdrop: 'images/mountain-backdrop.png',
         },
     };
 
@@ -112,6 +116,7 @@
         'night',
         'dawn',
         'twilight',
+        'midnight',
     ];
 
     const getSceneForTrack = (index) => {

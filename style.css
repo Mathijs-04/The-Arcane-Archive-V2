@@ -242,6 +242,31 @@ body[data-scene-theme="twilight"] .starfield-stars {
     }
 }
 
+body[data-scene-theme="midnight"] {
+    --scene-bg: #050912;
+}
+
+body[data-scene-theme="midnight"] .starfield-moon {
+    opacity: 1;
+    visibility: visible;
+    animation: moon-glow 12s ease-in-out infinite;
+}
+
+body[data-scene-theme="midnight"] .starfield-moon::before {
+    display: block;
+}
+
+body[data-scene-theme="midnight"] .starfield-sun {
+    opacity: 0;
+    visibility: hidden;
+    animation: none;
+}
+
+body[data-scene-theme="midnight"] .starfield-stars {
+    opacity: 1;
+    visibility: visible;
+}
+
 .starfield-moon {
     transition: opacity 0.85s ease, visibility 0.85s ease;
 }
@@ -267,13 +292,49 @@ body[data-scene-theme="twilight"] .starfield-stars {
     right: 0;
     bottom: 0;
     display: block;
-    height: var(--forest-backdrop-height);
     width: auto;
+    height: var(--forest-backdrop-height);
     max-width: none;
     pointer-events: none;
     user-select: none;
     -webkit-user-drag: none;
-    transition: opacity 0.55s ease;
+    transition: opacity 0.55s ease, filter 0.55s ease;
+}
+
+/* Tracks 2–4: full-width — faint; track 1 unchanged */
+body[data-scene-theme="dawn"] .forest-backdrop-layer,
+body[data-scene-theme="twilight"] .forest-backdrop-layer,
+body[data-scene-theme="midnight"] .forest-backdrop-layer {
+    opacity: var(--experimental-backdrop-layer-opacity);
+}
+
+body[data-scene-theme="dawn"] .forest-backdrop-layer {
+    --experimental-backdrop-layer-opacity: 0.3;
+}
+
+body[data-scene-theme="twilight"] .forest-backdrop-layer,
+body[data-scene-theme="midnight"] .forest-backdrop-layer {
+    --experimental-backdrop-layer-opacity: 0.24;
+}
+
+body[data-scene-theme="dawn"] .forest-backdrop-layer__art,
+body[data-scene-theme="twilight"] .forest-backdrop-layer__art,
+body[data-scene-theme="midnight"] .forest-backdrop-layer__art {
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: auto;
+}
+
+body[data-scene-theme="dawn"] .forest-backdrop-layer__art {
+    opacity: 0.48;
+    filter: saturate(0.34) contrast(0.68) brightness(0.88);
+}
+
+body[data-scene-theme="twilight"] .forest-backdrop-layer__art,
+body[data-scene-theme="midnight"] .forest-backdrop-layer__art {
+    opacity: 0.4;
+    filter: saturate(0.3) contrast(0.64) brightness(0.87);
 }
 
 .background-fog-layer {
@@ -496,6 +557,60 @@ body[data-scene-theme="twilight"] .music-player__control:active .music-player__c
         sepia(0.14)
         hue-rotate(248deg)
         saturate(0.88);
+}
+
+body[data-scene-theme="midnight"] .music-player {
+    --cube-fill: #181e28;
+    --cube-backing: #2e3642;
+    --cube-texture-base: #04070e;
+    --ink: #0c121c;
+    --player-heading-ink: #dce2ec;
+    --player-ink-muted: rgba(14, 22, 36, 0.78);
+    --player-ink-time: rgba(16, 24, 38, 0.72);
+    --player-ink-soft: rgba(12, 20, 32, 0.72);
+    --player-rail-top: #080a0f;
+    --player-rail-mid: #131820;
+    --player-rail-bottom: #05070b;
+    --player-fill-top: #252c38;
+    --player-fill-mid: #0f141c;
+    --player-fill-bottom: #030508;
+    --player-gem-top: #272e3a;
+    --player-gem-bottom: #090b10;
+    --player-knob-top: #1c222c;
+    --player-knob-mid: #06080c;
+    --player-knob-bottom: #141820;
+    --player-toggle-dot: #0a0e16;
+    --player-shadow-rgb: 8, 12, 22;
+}
+
+body[data-scene-theme="midnight"] .music-player__cover--4 {
+    --cover-backing: #808894;
+}
+
+body[data-scene-theme="midnight"] .music-player__control-icon {
+    filter:
+        drop-shadow(0 1px 0 rgba(var(--player-shadow-rgb), 0.35))
+        sepia(0.12)
+        hue-rotate(195deg)
+        saturate(0.9);
+}
+
+body[data-scene-theme="midnight"] .music-player__control:hover .music-player__control-icon {
+    opacity: 0.48;
+    filter:
+        drop-shadow(0 1px 0 rgba(var(--player-shadow-rgb), 0.2))
+        sepia(0.12)
+        hue-rotate(195deg)
+        saturate(0.9);
+}
+
+body[data-scene-theme="midnight"] .music-player__control:active .music-player__control-icon {
+    opacity: 0.4;
+    filter:
+        drop-shadow(0 1px 0 rgba(var(--player-shadow-rgb), 0.22))
+        sepia(0.12)
+        hue-rotate(195deg)
+        saturate(0.9);
 }
 
 .music-player__cube {
